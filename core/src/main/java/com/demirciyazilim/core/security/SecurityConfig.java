@@ -57,6 +57,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
                                 .requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers("/api/v1/files/**").permitAll()
+                                // Contact messages - public create, admin listing
+                                .requestMatchers(HttpMethod.POST, "/api/v1/contact-messages").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/contact-messages/**").hasAnyRole("ADMIN","EDITOR")
+                                .requestMatchers(HttpMethod.PATCH, "/api/v1/contact-messages/**").hasAnyRole("ADMIN","EDITOR")
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/contact-messages/**").hasRole("ADMIN")
                                 // Menu endpoints - GET operations are public, others require authentication
                                 .requestMatchers(HttpMethod.GET, "/api/v1/menus/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/menus/**").hasAnyRole("ADMIN", "EDITOR")
