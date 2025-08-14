@@ -1,0 +1,83 @@
+### Maven ###
+target/
+# Maven wrapper dosyalarını tamamen yok sayalım
+.mvn/
+mvnw
+mvnw.cmd
+# Aşağıdaki yorum satırı haline getiriliyor
+# !.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.jar
+*.war
+*.ear
+*.class
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+### STS/Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+*.code-workspace
+
+### Sistem dosyaları ###
+.DS_Store
+Thumbs.db
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+
+### Uygulama özellikleri ve gizli değerler ###
+# Üretim yapılandırmasını hariç tut (her yerde)
+**/application-prod.properties
+application-prod.yml
+
+# Tüm application-* dosyalarını hariç tut ama aşağıdakileri dahil et
+**/application-*.properties
+**/application-*.yml
+
+# Ana uygulama dosyalarını dahil et
+!**/src/main/resources/application.properties
+!**/src/main/resources/application.yml
+
+# Geliştirme dosyasını dahil et
+!**/src/main/resources/application-dev.properties
+!**/src/main/resources/application-dev.yml
+
+# Environment Variables
+.env
+
+# Eski yapılandırma - artık kullanılmıyor
+application-secrets.properties 
