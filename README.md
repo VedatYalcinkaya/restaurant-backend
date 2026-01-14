@@ -1,41 +1,52 @@
-# Demirci Yazılım Backend
-
-Bu proje, Demirci Yazılım şirketi için geliştirilen web sitesinin backend uygulamasıdır.
-
-## Proje Yapısı
-
-Proje, Maven multi-module yapısı ile geliştirilmiştir:
-- `core`: Temel bileşenler, utility sınıfları
-- `entities`: Veritabanı varlıkları
-- `repositories`: Veritabanı işlemleri
-- `business`: İş mantığı
-- `webapi`: REST API ve web arayüzü
-
-## Yapılandırma
-
-Projede üç ana yapılandırma dosyası bulunmaktadır:
-
-1. `application.properties`: Genel yapılandırma ayarları (GitHub'da paylaşılır)
-2. `application-dev.properties`: Geliştirme ortamı için örnek konfigürasyon (GitHub'da paylaşılır)
-3. `application-prod.properties`: Üretim ortamı için gerçek gizli bilgiler (GitHub'a yüklenmez)
-
-## Geliştirme Ortamı Kurulumu
-
-1. Projeyi klonlayın
-2. `application.properties` dosyasındaki `spring.profiles.active` değerini `dev` olarak değiştirin
-3. Maven ile projeyi derleyin: `mvn clean install`
-4. Uygulamayı çalıştırın: `java -jar webapi/target/demirci-api.jar`
-
-## Production Ortamı Kurulumu
-
-1. Projeyi derleyin: `mvn clean package -DskipTests`
-2. `webapi/target/demirci-api.jar` dosyasını sunucuya yükleyin
-3. `application-prod.properties` dosyasını aynı dizine yükleyin
-4. `application.properties` dosyasında `spring.profiles.active=prod` olduğundan emin olun
-5. Uygulamayı çalıştırın: `java -jar demirci-api.jar`
-
-## Dikkat Edilmesi Gerekenler
-
-- `application-prod.properties` dosyasını asla GitHub'a yüklemeyin!
-- Geliştirme yaparken profili `dev` olarak ayarlayın
-- Üretim ortamında profili `prod` olarak ayarlayın 
+1	# Restaurant Backend API
+     2	
+     3	Bu depo, restoran işletmeleri için menü yönetimi ve rezervasyon süreçlerini yöneten Spring Boot tabanlı bir backend uygulamasıdır.
+     4	
+     5	## Özellikler
+     6	
+     7	- Menü kategorileri ve menü öğeleri yönetimi
+     8	- Menü öğeleri için görsel yükleme desteği
+     9	- Rezervasyon oluşturma, güncelleme ve durum yönetimi
+    10	- Tarih, durum, müşteri e-posta/telefon gibi kriterlerle rezervasyon sorgulama
+    11	
+    12	## Proje Yapısı
+    13	
+    14	Maven multi-module mimarisi kullanılmıştır:
+    15	
+    16	- `core`: Ortak yardımcılar ve altyapı bileşenleri
+    17	- `entities`: JPA varlıkları ve enumlar
+    18	- `repositories`: Veri erişim katmanı
+    19	- `business`: İş kuralları ve servisler
+    20	- `webapi`: REST API katmanı
+    21	
+    22	## Teknolojiler
+    23	
+    24	- Java 17
+    25	- Spring Boot 3
+    26	- Maven
+    27	- PostgreSQL / MySQL (runtime sürücüleri)
+    28	
+    29	## Kurulum ve Çalıştırma
+    30	
+    31	1. Depoyu klonlayın.
+    32	2. `webapi/src/main/resources/application.properties` içinde gerekli ayarları yapın.
+    33	3. Geliştirme ortamı için `application-dev.properties` dosyasındaki değerleri güncelleyin.
+    34	4. Derleme:
+    35	   ```bash
+    36	   mvn clean install
+    37	   ```
+    38	5. Çalıştırma:
+    39	   ```bash
+    40	   java -jar webapi/target/demirci-api.jar
+    41	   ```
+    42	
+    43	## Konfigürasyon Notları
+    44	
+    45	- `application-dev.properties` geliştirme ortamı için örnek ayarları içerir.
+    46	- Üretim ortamı için ayrı bir konfigürasyon dosyası hazırlayıp `spring.profiles.active` ile seçebilirsiniz.
+    47	
+    48	## API Dokümantasyonu
+    49	
+    50	Uygulama çalışırken Swagger arayüzü üzerinden API uç noktalarını inceleyebilirsiniz:
+    51	
+    52	- `http://localhost:8080/swagger-ui/index.html`
