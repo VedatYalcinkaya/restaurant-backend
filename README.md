@@ -1,52 +1,156 @@
-1	# Restaurant Backend API
-     2	
-     3	Bu depo, restoran işletmeleri için menü yönetimi ve rezervasyon süreçlerini yöneten Spring Boot tabanlı bir backend uygulamasıdır.
-     4	
-     5	## Özellikler
-     6	
-     7	- Menü kategorileri ve menü öğeleri yönetimi
-     8	- Menü öğeleri için görsel yükleme desteği
-     9	- Rezervasyon oluşturma, güncelleme ve durum yönetimi
-    10	- Tarih, durum, müşteri e-posta/telefon gibi kriterlerle rezervasyon sorgulama
-    11	
-    12	## Proje Yapısı
-    13	
-    14	Maven multi-module mimarisi kullanılmıştır:
-    15	
-    16	- `core`: Ortak yardımcılar ve altyapı bileşenleri
-    17	- `entities`: JPA varlıkları ve enumlar
-    18	- `repositories`: Veri erişim katmanı
-    19	- `business`: İş kuralları ve servisler
-    20	- `webapi`: REST API katmanı
-    21	
-    22	## Teknolojiler
-    23	
-    24	- Java 17
-    25	- Spring Boot 3
-    26	- Maven
-    27	- PostgreSQL / MySQL (runtime sürücüleri)
-    28	
-    29	## Kurulum ve Çalıştırma
-    30	
-    31	1. Depoyu klonlayın.
-    32	2. `webapi/src/main/resources/application.properties` içinde gerekli ayarları yapın.
-    33	3. Geliştirme ortamı için `application-dev.properties` dosyasındaki değerleri güncelleyin.
-    34	4. Derleme:
-    35	   ```bash
-    36	   mvn clean install
-    37	   ```
-    38	5. Çalıştırma:
-    39	   ```bash
-    40	   java -jar webapi/target/demirci-api.jar
-    41	   ```
-    42	
-    43	## Konfigürasyon Notları
-    44	
-    45	- `application-dev.properties` geliştirme ortamı için örnek ayarları içerir.
-    46	- Üretim ortamı için ayrı bir konfigürasyon dosyası hazırlayıp `spring.profiles.active` ile seçebilirsiniz.
-    47	
-    48	## API Dokümantasyonu
-    49	
-    50	Uygulama çalışırken Swagger arayüzü üzerinden API uç noktalarını inceleyebilirsiniz:
-    51	
-    52	- `http://localhost:8080/swagger-ui/index.html`
+# Restaurant Backend API 🍽️
+
+Spring Boot tabanlı Restaurant Backend projesi.  
+Rezervasyon, menü ve kariyer süreçlerini yöneten RESTful bir backend mimarisi sunar.
+
+Proje, katmanlı mimari ve Maven multi-module yapısı kullanılarak geliştirilmiştir.
+
+---
+
+## ✨ Özellikler
+
+- Rezervasyon Yönetimi
+- Menü ve Kategori Yönetimi
+- Kariyer / İş Başvuruları
+- JWT Authentication
+- Spring Security
+- PostgreSQL + JPA (Hibernate)
+- Cloudinary Dosya & Görsel Yükleme
+- Swagger (OpenAPI)
+- Katmanlı Mimari (Controller / Service / Repository)
+
+---
+
+## 🧱 Proje Yapısı (Multi-Module)
+
+restaurant-backend  
+├── core  
+│   └── ortak yardımcı sınıflar, altyapı yapıları  
+├── entities  
+│   └── JPA Entity sınıfları  
+├── repositories  
+│   └── Spring Data JPA repository’leri  
+├── business  
+│   └── Service katmanı, iş kuralları  
+└── webapi  
+    └── Controller’lar, config, security, main application  
+
+---
+
+## 🛠️ Kullanılan Teknolojiler
+
+- Java 17+
+- Spring Boot
+- Spring Security + JWT
+- Spring Data JPA (Hibernate)
+- PostgreSQL
+- Maven
+- Cloudinary
+- Swagger / OpenAPI
+
+---
+
+## ✅ Gereksinimler
+
+- Java 17 veya üzeri
+- Maven
+- PostgreSQL
+- (Opsiyonel) pgAdmin
+
+---
+
+## ⚙️ Kurulum ve Çalıştırma
+
+### Projeyi Klonla
+
+git clone https://github.com/VedatYalcinkaya/restaurant-backend.git  
+cd restaurant-backend  
+
+---
+
+### PostgreSQL Veritabanı
+
+- Database: restaurant_db  
+- Username: postgres  
+- Password: your_password  
+
+---
+
+### Application Properties
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/restaurant_db  
+spring.datasource.username=postgres  
+spring.datasource.password=your_password  
+
+spring.jpa.hibernate.ddl-auto=update  
+spring.jpa.show-sql=true  
+
+app.jwt.secret=CHANGE_THIS_SECRET  
+app.jwt.expiration=86400000  
+
+cloudinary.cloud-name=YOUR_CLOUD_NAME  
+cloudinary.api-key=YOUR_API_KEY  
+cloudinary.api-secret=YOUR_API_SECRET  
+
+---
+
+### Build
+
+mvn clean install  
+
+---
+
+### Çalıştırma
+
+java -jar webapi/target/*.jar  
+
+veya IDE üzerinden webapi modülündeki Spring Boot main class çalıştırılabilir.
+
+---
+
+## 📚 Swagger / OpenAPI
+
+http://localhost:8080/swagger-ui/index.html  
+
+---
+
+## 🔐 JWT Authentication
+
+Authorization header kullanımı:
+
+Authorization: Bearer YOUR_TOKEN  
+
+---
+
+## 🧪 Test
+
+- Swagger UI
+- Postman
+
+---
+
+## 🚀 Deployment
+
+- application-prod.properties dosyasını repoya ekleme
+- Ortam değişkenleri kullanılması önerilir
+- Nginx + systemd ile servis olarak çalıştırılabilir
+
+---
+
+## 🤝 Katkı
+
+Issue ve Pull Request’ler açıktır.
+
+---
+
+## 📄 Lisans
+
+Henüz lisans eklenmemiştir.  
+MIT veya Apache 2.0 lisansı eklenebilir.
+
+---
+
+## 👤 Geliştirici
+
+Vedat Yalçınkaya  
+GitHub: https://github.com/VedatYalcinkaya
