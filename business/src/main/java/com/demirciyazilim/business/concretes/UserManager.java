@@ -1,5 +1,6 @@
 package com.demirciyazilim.business.concretes;
 
+import com.demirciyazilim.business.abstracts.RefreshTokenService;
 import com.demirciyazilim.business.abstracts.UserService;
 import com.demirciyazilim.business.constants.Messages;
 import com.demirciyazilim.business.rules.UserBusinessRules;
@@ -9,6 +10,7 @@ import com.demirciyazilim.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +23,7 @@ public class UserManager implements UserService {
     private final UserRepository userRepository;
     private final UserBusinessRules userBusinessRules;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
     
     @Override
     public DataResult<List<User>> getAll() {
@@ -94,8 +97,10 @@ public class UserManager implements UserService {
     }
     
     @Override
+    @Transactional
     public Result delete(Long id) {
         userBusinessRules.checkIfUserExists(id);
+        refreshTokenService.deleteByUserId(id);
         userRepository.deleteById(id);
         return new SuccessResult(Messages.USER_DELETED_SUCCESSFULLY);
     }

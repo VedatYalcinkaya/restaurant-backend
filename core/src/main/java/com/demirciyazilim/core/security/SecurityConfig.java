@@ -53,7 +53,9 @@ public class SecurityConfig {
                                 // Public endpoints
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                                .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/logout").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/auth/validate").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
                                 .requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers("/api/v1/files/**").permitAll()
@@ -76,7 +78,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/menu-categories/**").hasAnyRole("ADMIN", "EDITOR")
                                 // Reservation endpoints - POST is public (customers can create), others require authentication
                                 .requestMatchers(HttpMethod.POST, "/api/v1/reservations").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/reservations/customer/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/reservations/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PUT, "/api/v1/reservations/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/v1/reservations/**").hasAnyRole("ADMIN", "EDITOR")

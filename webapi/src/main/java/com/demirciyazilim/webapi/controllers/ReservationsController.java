@@ -132,6 +132,7 @@ public class ReservationsController {
     }
 
     @GetMapping("/customer/email/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
     @Operation(
         summary = "Email'e göre rezervasyonları getir", 
         description = "Belirtilen email adresine sahip müşterinin rezervasyonlarını döndürür"
@@ -141,6 +142,7 @@ public class ReservationsController {
     }
 
     @GetMapping("/customer/phone/{phone}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
     @Operation(
         summary = "Telefona göre rezervasyonları getir", 
         description = "Belirtilen telefon numarasına sahip müşterinin rezervasyonlarını döndürür"
