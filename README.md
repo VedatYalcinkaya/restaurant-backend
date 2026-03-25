@@ -39,3 +39,9 @@ Projede üç ana yapılandırma dosyası bulunur:
 - Production secret değerlerini repoya commit etmeyin
 - Geliştirme yaparken uygun profili kullanın
 - CORS, iletişim alıcısı ve OpenAPI production URL ayarlarını environment değişkenleriyle özelleştirebilirsiniz
+
+## Deploy
+
+- Uygulama Ubuntu 24.04 uzerinde systemd servisi olarak calisir
+- Port: `8083` (SERVER_PORT env variable ile override edilebilir)
+- Deploy adimlari ve sunucu bilgileri `AGENTS.md` icindeki "Production Deploy" bolumunde dokumante edilmistir

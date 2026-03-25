@@ -19,7 +19,7 @@ It documents current reality, including awkward parts, not an idealized architec
   - `webapi`: controllers ve application bootstrap.
 - Ana giris noktasi / Main entrypoint:
   [webapi/src/main/java/com/demirciyazilim/webapi/AlaSogusBackendApplication.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\webapi\src\main\java\com\demirciyazilim\webapi\AlaSogusBackendApplication.java)
-- Varsayilan HTTP port'u / Default port: `8082`.
+- Varsayilan HTTP port'u / Default port: `${SERVER_PORT:8083}` (env variable ile override edilebilir).
 
 ## Uygulama Nasil Bagli / How The App Is Wired
 
@@ -34,6 +34,8 @@ It documents current reality, including awkward parts, not an idealized architec
   [business/src/main/java/com/demirciyazilim/business/concretes/RefreshTokenManager.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\business\src\main\java\com\demirciyazilim\business\concretes\RefreshTokenManager.java)
 - OpenAPI / Swagger aktiftir:
   [core/src/main/java/com/demirciyazilim/core/config/OpenApiConfig.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\core\src\main\java\com\demirciyazilim\core\config\OpenApiConfig.java)
+- Restoran branding, OpenAPI contact/server ve CORS allowed origin ayarlari `AppProperties` uzerinden merkezi olarak okunur:
+  [core/src/main/java/com/demirciyazilim/core/config/AppProperties.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\core\src\main\java\com\demirciyazilim\core\config\AppProperties.java)
 - Dosya yukleme / file upload, Cloudinary uzerinden gider:
   [core/src/main/java/com/demirciyazilim/core/utilities/file/CloudinaryService.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\core\src\main\java\com\demirciyazilim\core\utilities\file\CloudinaryService.java)
 
@@ -110,8 +112,9 @@ It documents current reality, including awkward parts, not an idealized architec
 - Config dosyalari burada yasar:
   [webapi/src/main/resources](c:\DemirciYazilimProjects\restaurant\restaurant-backend\webapi\src\main\resources)
 - Shared `application.properties` su an `spring.profiles.active=prod` set ediyor.
+- `application.properties` icinde `app.restaurant.*`, `app.contact.*`, `app.cors.*` ve `app.openapi.*` ayarlari bulunur.
 - `application-dev.properties`, environment variables uzerinden credential okuyor.
-- `application-prod.properties` workspace icinde mevcut ve sensitive kabul edilmelidir.
+- `application-prod.properties` repo'da bulunmuyor (gitignore'da); production credentials sunucuda `/etc/ala-sogus/ala-sogus.env` dosyasindan environment variable olarak okunur.
 - Config icinden secret degerleri asla chat output'a kopyalama, ozetleme veya ifsa etme.
 - Repo su an system Maven kullaniyor gibi gorunuyor; Maven wrapper dosyalari ignore edilmis ve mevcut degil.
 
@@ -143,8 +146,10 @@ It documents current reality, including awkward parts, not an idealized architec
   Ucuncu bir source of truth ekleme.
 - README terminal output'unda encoding problemleri gorunuyor.
   Kullanici istemedikce "drive-by encoding fix" yapma.
-- `application-prod.properties`, repo niyetine gore paylasilmamasi gereken production data barindirabilecek halde workspace'te mevcut.
+- `application-prod.properties` repo'da bulunmuyor (gitignore'da); dosya lokalde mevcut olsa da Github'a push edilmez.
   Config-related task'larda ekstra dikkatli ol.
+- Gorunen uygulama/brand ismi Ala Sogus olsa da Java package ve `groupId` halen `com.demirciyazilim` altindadir.
+  Kullanici acikca istemedikce package-rename veya namespace refactor'una girme.
 - `ModelMapper` siniflari var ama canli feature kodu cogunlukla manual mapping kullaniyor.
   Standard pattern budur diye `ModelMapper` dayatma.
 - Bu environment'ta `git status`, `safe.directory` warning'i verebiliyor.
@@ -153,9 +158,25 @@ It documents current reality, including awkward parts, not an idealized architec
 ## Build ve Dogrulama Notlari / Build And Verification Notes
 
 - Repo dokumanina gore temel build komutu: `mvn clean install`
+- Sadece webapi package etmek icin: `mvn -pl webapi -am package -DskipTests`
 - `webapi` tarafinda package edilen artifact adi: `ala-sogus-api`
 - Verification gerekiyorsa once targeted ve non-destructive check'leri tercih et
 - Bir sey calistirmadiysan veya hic verification yapmadiysan bunu final response'ta acikca belirt
+
+## Production Deploy / Deployment Notes
+
+- Sunucu: Ubuntu 24.04, IP `46.202.155.249`
+- Java 17 kurulu, MySQL aktif
+- Uygulama systemd servisi olarak calisir: `ala-sogus.service`
+- Jar lokasyonu: `/opt/ala-sogus/ala-sogus-api.jar`
+- Env dosyasi: `/etc/ala-sogus/ala-sogus.env` (credentials burada, root:root 600)
+- Aktif port: `8083` (UFW ile acik)
+- Servis kullanicisi: `alasogus` (system user, no login)
+- Guncelleme adimlari:
+  1. Lokal: `mvn -pl webapi -am package -DskipTests`
+  2. `scp webapi/target/ala-sogus-api.jar root@46.202.155.249:/tmp/ala-sogus-api.jar`
+  3. SSH: `sudo systemctl stop ala-sogus && sudo cp /tmp/ala-sogus-api.jar /opt/ala-sogus/ala-sogus-api.jar && sudo chown alasogus:alasogus /opt/ala-sogus/ala-sogus-api.jar && sudo systemctl start ala-sogus`
+- Sunucuda diger projeler var (`demirci-app`, `emre-okur-backend`), onlara dokunma
 
 ## Bir Kod Gorevi Ne Zaman Tamam Sayilir / Definition Of Done
 
