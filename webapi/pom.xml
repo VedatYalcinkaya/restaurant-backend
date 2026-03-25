@@ -5,14 +5,14 @@
     
     <parent>
         <groupId>com.demirciyazilim</groupId>
-        <artifactId>demirci-backend</artifactId>
+        <artifactId>ala-sogus-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
     <artifactId>webapi</artifactId>
     <name>webapi</name>
-    <description>Web API module for demirciyazilim.com backend</description>
+    <description>Web API module for the Ala Söğüş backend</description>
     
     <dependencies>
         <dependency>
@@ -50,7 +50,7 @@
     </dependencies>
     
     <build>
-        <finalName>demirci-api</finalName>
+        <finalName>ala-sogus-api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

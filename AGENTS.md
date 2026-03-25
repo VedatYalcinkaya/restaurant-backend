@@ -18,7 +18,7 @@ It documents current reality, including awkward parts, not an idealized architec
   - `business`: DTOs, service interfaces, manager implementations, business rules, mapper classes.
   - `webapi`: controllers ve application bootstrap.
 - Ana giris noktasi / Main entrypoint:
-  [webapi/src/main/java/com/demirciyazilim/webapi/DemirciBackendApplication.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\webapi\src\main\java\com\demirciyazilim\webapi\DemirciBackendApplication.java)
+  [webapi/src/main/java/com/demirciyazilim/webapi/AlaSogusBackendApplication.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\webapi\src\main\java\com\demirciyazilim\webapi\AlaSogusBackendApplication.java)
 - Varsayilan HTTP port'u / Default port: `8082`.
 
 ## Uygulama Nasil Bagli / How The App Is Wired
@@ -138,7 +138,7 @@ It documents current reality, including awkward parts, not an idealized architec
   [src/main/java/com/demirciyazilim/webapi/controllers/AuthController.java](c:\DemirciYazilimProjects\restaurant\restaurant-backend\src\main\java\com\demirciyazilim\webapi\controllers\AuthController.java)
   Bunu bilincli cleanup yapilmadikca legacy/confusing artifact gibi ele al.
 - CORS mantigi birden fazla yerde gorunuyor:
-  - aktif davranis app bootstrap ve security config tarafinda
+  - aktif davranis security config tarafinda tutulur
   - ayri olarak fully commented bir `CorsConfig` dosyasi da var
   Ucuncu bir source of truth ekleme.
 - README terminal output'unda encoding problemleri gorunuyor.
@@ -153,7 +153,7 @@ It documents current reality, including awkward parts, not an idealized architec
 ## Build ve Dogrulama Notlari / Build And Verification Notes
 
 - Repo dokumanina gore temel build komutu: `mvn clean install`
-- `webapi` tarafinda package edilen artifact adi: `demirci-api`
+- `webapi` tarafinda package edilen artifact adi: `ala-sogus-api`
 - Verification gerekiyorsa once targeted ve non-destructive check'leri tercih et
 - Bir sey calistirmadiysan veya hic verification yapmadiysan bunu final response'ta acikca belirt
 

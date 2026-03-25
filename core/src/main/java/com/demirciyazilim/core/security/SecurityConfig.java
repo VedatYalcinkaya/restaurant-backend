@@ -1,7 +1,9 @@
 package com.demirciyazilim.core.security;
 
+import com.demirciyazilim.core.config.AppProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -11,13 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.http.HttpMethod;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -25,10 +26,16 @@ public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAuthenticationFilter authenticationFilter;
+    private final AppProperties appProperties;
 
-    public SecurityConfig(JwtAuthenticationEntryPoint authenticationEntryPoint, JwtAuthenticationFilter authenticationFilter) {
+    public SecurityConfig(
+            JwtAuthenticationEntryPoint authenticationEntryPoint,
+            JwtAuthenticationFilter authenticationFilter,
+            AppProperties appProperties
+    ) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationFilter = authenticationFilter;
+        this.appProperties = appProperties;
     }
 
     @Bean
@@ -50,7 +57,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                // Public endpoints
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/logout").permitAll()
@@ -59,42 +65,35 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
                                 .requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers("/api/v1/files/**").permitAll()
-                                // Contact messages - public create, admin listing
                                 .requestMatchers(HttpMethod.POST, "/api/v1/contact-messages").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/contact-messages/**").hasAnyRole("ADMIN","EDITOR")
-                                .requestMatchers(HttpMethod.PATCH, "/api/v1/contact-messages/**").hasAnyRole("ADMIN","EDITOR")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/contact-messages/**").hasAnyRole("ADMIN", "EDITOR")
+                                .requestMatchers(HttpMethod.PATCH, "/api/v1/contact-messages/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/contact-messages/**").hasRole("ADMIN")
-                                // Menu endpoints - GET operations are public, others require authentication
                                 .requestMatchers(HttpMethod.GET, "/api/v1/menus/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/menus/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PUT, "/api/v1/menus/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/v1/menus/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/menus/**").hasAnyRole("ADMIN", "EDITOR")
-                                // Menu Categories endpoints - GET operations are public, others require authentication
                                 .requestMatchers(HttpMethod.GET, "/api/v1/menu-categories/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/menu-categories/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PUT, "/api/v1/menu-categories/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/v1/menu-categories/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/menu-categories/**").hasAnyRole("ADMIN", "EDITOR")
-                                // Reservation endpoints - POST is public (customers can create), others require authentication
                                 .requestMatchers(HttpMethod.POST, "/api/v1/reservations").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/reservations/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PUT, "/api/v1/reservations/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/v1/reservations/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/reservations/**").hasRole("ADMIN")
-                                // Jobs - public listing, admin management
                                 .requestMatchers(HttpMethod.GET, "/api/v1/jobs", "/api/v1/jobs/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/jobs/all").hasAnyRole("ADMIN","EDITOR")
-                                .requestMatchers(HttpMethod.POST, "/api/v1/jobs/**").hasAnyRole("ADMIN","EDITOR")
-                                .requestMatchers(HttpMethod.PUT, "/api/v1/jobs/**").hasAnyRole("ADMIN","EDITOR")
-                                .requestMatchers(HttpMethod.PATCH, "/api/v1/jobs/**").hasAnyRole("ADMIN","EDITOR")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/jobs/all").hasAnyRole("ADMIN", "EDITOR")
+                                .requestMatchers(HttpMethod.POST, "/api/v1/jobs/**").hasAnyRole("ADMIN", "EDITOR")
+                                .requestMatchers(HttpMethod.PUT, "/api/v1/jobs/**").hasAnyRole("ADMIN", "EDITOR")
+                                .requestMatchers(HttpMethod.PATCH, "/api/v1/jobs/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/jobs/**").hasRole("ADMIN")
-                                // Job Applications - public apply, admin management
                                 .requestMatchers(HttpMethod.POST, "/api/v1/job-applications/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/job-applications/**").hasAnyRole("ADMIN","EDITOR")
-                                .requestMatchers(HttpMethod.PATCH, "/api/v1/job-applications/**").hasAnyRole("ADMIN","EDITOR")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/job-applications/**").hasAnyRole("ADMIN", "EDITOR")
+                                .requestMatchers(HttpMethod.PATCH, "/api/v1/job-applications/**").hasAnyRole("ADMIN", "EDITOR")
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/job-applications/**").hasRole("ADMIN")
-                                // Protected endpoints
                                 .anyRequest().authenticated()
                 );
 
@@ -106,24 +105,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-            "https://emreokur.av.tr", 
-            "https://www.emreokur.av.tr",
-            "http://localhost:3000",
-            "http://localhost:8080",
-            "http://localhost:8082",
-            "http://localhost:5173",
-            "http://127.0.0.1:5173"
-        ));
+        configuration.setAllowedOrigins(appProperties.getCors().getAllowedOrigins().stream()
+                .filter(StringUtils::hasText)
+                .toList());
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList(
-            "Authorization", 
-            "Content-Type", 
-            "X-Requested-With", 
-            "Accept", 
-            "Origin", 
-            "Access-Control-Request-Method", 
-            "Access-Control-Request-Headers"
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
         ));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Disposition"));
         configuration.setAllowCredentials(true);
@@ -133,4 +126,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-} 
+}
