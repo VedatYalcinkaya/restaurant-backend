@@ -5,14 +5,14 @@
     
     <parent>
         <groupId>com.demirciyazilim</groupId>
-        <artifactId>demirci-backend</artifactId>
+        <artifactId>ala-sogus-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
     <artifactId>business</artifactId>
     <name>business</name>
-    <description>Business module for demirciyazilim.com backend</description>
+    <description>Business module for the Ala Söğüş backend</description>
     
     <dependencies>
         <dependency>

@@ -10,42 +10,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.demirciyazilim"})
 @EntityScan(basePackages = {"com.demirciyazilim.entities"})
 @EnableJpaRepositories(basePackages = {"com.demirciyazilim.repositories"})
 @EnableScheduling
-public class DemirciBackendApplication {
+public class AlaSogusBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemirciBackendApplication.class, args);
+        SpringApplication.run(AlaSogusBackendApplication.class, args);
     }
-    
+
     @Bean
     public ConfigurableServletWebServerFactory webServerFactory() {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
         factory.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
-            connector.setMaxPostSize(20 * 1024 * 1024); // 20 MB
+            connector.setMaxPostSize(20 * 1024 * 1024);
             connector.setMaxParameterCount(1000);
         });
         return factory;
-    }
-    
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                    .allowedOrigins("https://emreokur.av.tr", "https://www.emreokur.av.tr")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD")
-                    .allowedHeaders("*")
-                    .allowCredentials(true)
-                    .maxAge(3600);
-            }
-        };
     }
 }

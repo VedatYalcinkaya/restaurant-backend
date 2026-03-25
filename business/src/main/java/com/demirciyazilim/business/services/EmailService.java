@@ -1,31 +1,48 @@
 package com.demirciyazilim.business.services;
 
+import com.demirciyazilim.core.config.AppProperties;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
-@AllArgsConstructor
 public class EmailService {
-    
+
     private final JavaMailSender mailSender;
-    private final String TO_EMAIL = "info@demirciyazilim.com"; // Alıcı e-posta adresi
-    
+    private final AppProperties appProperties;
+    private final String fallbackNotificationEmail;
+
+    public EmailService(
+            JavaMailSender mailSender,
+            AppProperties appProperties,
+            @Value("${spring.mail.properties.mail.smtp.from:${spring.mail.username:}}") String fallbackNotificationEmail
+    ) {
+        this.mailSender = mailSender;
+        this.appProperties = appProperties;
+        this.fallbackNotificationEmail = fallbackNotificationEmail;
+    }
+
     public void sendContactFormEmail(String from, String subject, String htmlContent) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        
+        String notificationEmail = resolveNotificationEmail();
+
+        if (!StringUtils.hasText(notificationEmail)) {
+            throw new MessagingException("Contact notification recipient is not configured");
+        }
+
         helper.setFrom(from);
-        helper.setTo(TO_EMAIL);
+        helper.setTo(notificationEmail);
         helper.setSubject(subject != null && !subject.isEmpty() ? subject : "İletişim Formu Mesajı");
         helper.setText(htmlContent, true);
-        
+
         mailSender.send(message);
     }
-    
+
     public String createContactFormEmailContent(String fullName, String email, String phone, String subject, String message) {
         return String.format("""
             <html>
@@ -41,14 +58,14 @@ public class EmailService {
                             <p>%s</p>
                         </div>
                         <p style="font-size: 12px; color: #999; margin-top: 20px; text-align: center;">
-                            Bu e-posta Demirci Yazılım web sitesi üzerinden gönderilmiştir.
+                            Bu e-posta %s web sitesi üzerinden gönderilmiştir.
                         </p>
                     </div>
                 </body>
             </html>
-            """, fullName, email, email, phone, subject != null ? subject : "-", message);
+            """, fullName, email, email, phone, subject != null ? subject : "-", message, appProperties.getRestaurantName());
     }
-    
+
     public String createQuoteFormEmailContent(String fullName, String email, String phone, String service, String message) {
         return String.format("""
             <html>
@@ -64,11 +81,19 @@ public class EmailService {
                             <p>%s</p>
                         </div>
                         <p style="font-size: 12px; color: #999; margin-top: 20px; text-align: center;">
-                            Bu e-posta Demirci Yazılım web sitesi üzerinden gönderilmiştir.
+                            Bu e-posta %s web sitesi üzerinden gönderilmiştir.
                         </p>
                     </div>
                 </body>
             </html>
-            """, fullName, email, email, phone, service, message);
+            """, fullName, email, email, phone, service, message, appProperties.getRestaurantName());
     }
-} 
+
+    private String resolveNotificationEmail() {
+        if (StringUtils.hasText(appProperties.getContact().getNotificationEmail())) {
+            return appProperties.getContact().getNotificationEmail();
+        }
+
+        return fallbackNotificationEmail;
+    }
+}

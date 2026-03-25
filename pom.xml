@@ -10,11 +10,11 @@
     </parent>
     
     <groupId>com.demirciyazilim</groupId>
-    <artifactId>demirci-backend</artifactId>
+    <artifactId>ala-sogus-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>demirci-backend</name>
-    <description>Backend for demirciyazilim.com website</description>
+    <name>Ala Sogus Backend</name>
+    <description>Backend for the Ala Söğüş restaurant</description>
     
     <modules>
         <module>core</module>

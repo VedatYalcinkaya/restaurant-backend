@@ -1,156 +1,41 @@
-# Restaurant Backend API 🍽️
+# Ala Söğüş Backend
 
-Spring Boot tabanlı Restaurant Backend projesi.  
-Rezervasyon, menü ve kariyer süreçlerini yöneten RESTful bir backend mimarisi sunar.
+Bu proje, Ala Söğüş restoranı için geliştirilen backend uygulamasıdır.
 
-Proje, katmanlı mimari ve Maven multi-module yapısı kullanılarak geliştirilmiştir.
+## Proje Yapısı
 
----
+Proje, Maven multi-module yapısı ile geliştirilmiştir:
+- `core`: Temel bileşenler ve ortak utility sınıfları
+- `entities`: Veritabanı varlıkları
+- `repositories`: Veritabanı işlemleri
+- `business`: İş mantığı
+- `webapi`: REST API katmanı
 
-## ✨ Özellikler
+## Yapılandırma
 
-- Rezervasyon Yönetimi
-- Menü ve Kategori Yönetimi
-- Kariyer / İş Başvuruları
-- JWT Authentication
-- Spring Security
-- PostgreSQL + JPA (Hibernate)
-- Cloudinary Dosya & Görsel Yükleme
-- Swagger (OpenAPI)
-- Katmanlı Mimari (Controller / Service / Repository)
+Projede üç ana yapılandırma dosyası bulunur:
 
----
+1. `application.properties`: Genel yapılandırma ayarları
+2. `application-dev.properties`: Geliştirme ortamı ayarları
+3. `application-prod.properties`: Üretim ortamı ayarları
 
-## 🧱 Proje Yapısı (Multi-Module)
+## Geliştirme Ortamı Kurulumu
 
-restaurant-backend  
-├── core  
-│   └── ortak yardımcı sınıflar, altyapı yapıları  
-├── entities  
-│   └── JPA Entity sınıfları  
-├── repositories  
-│   └── Spring Data JPA repository’leri  
-├── business  
-│   └── Service katmanı, iş kuralları  
-└── webapi  
-    └── Controller’lar, config, security, main application  
+1. Projeyi klonlayın
+2. `application.properties` dosyasındaki `spring.profiles.active` değerini gerekirse `dev` olarak değiştirin
+3. Maven ile projeyi derleyin: `mvn clean install`
+4. Uygulamayı çalıştırın: `java -jar webapi/target/ala-sogus-api.jar`
 
----
+## Production Ortamı Kurulumu
 
-## 🛠️ Kullanılan Teknolojiler
+1. Projeyi derleyin: `mvn clean package -DskipTests`
+2. `webapi/target/ala-sogus-api.jar` dosyasını sunucuya yükleyin
+3. Gerekli production konfigürasyonlarını sağlayın
+4. `application.properties` dosyasında `spring.profiles.active=prod` olduğundan emin olun
+5. Uygulamayı çalıştırın: `java -jar ala-sogus-api.jar`
 
-- Java 17+
-- Spring Boot
-- Spring Security + JWT
-- Spring Data JPA (Hibernate)
-- PostgreSQL
-- Maven
-- Cloudinary
-- Swagger / OpenAPI
+## Dikkat Edilmesi Gerekenler
 
----
-
-## ✅ Gereksinimler
-
-- Java 17 veya üzeri
-- Maven
-- PostgreSQL
-- (Opsiyonel) pgAdmin
-
----
-
-## ⚙️ Kurulum ve Çalıştırma
-
-### Projeyi Klonla
-
-git clone https://github.com/VedatYalcinkaya/restaurant-backend.git  
-cd restaurant-backend  
-
----
-
-### PostgreSQL Veritabanı
-
-- Database: restaurant_db  
-- Username: postgres  
-- Password: your_password  
-
----
-
-### Application Properties
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/restaurant_db  
-spring.datasource.username=postgres  
-spring.datasource.password=your_password  
-
-spring.jpa.hibernate.ddl-auto=update  
-spring.jpa.show-sql=true  
-
-app.jwt.secret=CHANGE_THIS_SECRET  
-app.jwt.expiration=86400000  
-
-cloudinary.cloud-name=YOUR_CLOUD_NAME  
-cloudinary.api-key=YOUR_API_KEY  
-cloudinary.api-secret=YOUR_API_SECRET  
-
----
-
-### Build
-
-mvn clean install  
-
----
-
-### Çalıştırma
-
-java -jar webapi/target/*.jar  
-
-veya IDE üzerinden webapi modülündeki Spring Boot main class çalıştırılabilir.
-
----
-
-## 📚 Swagger / OpenAPI
-
-http://localhost:8080/swagger-ui/index.html  
-
----
-
-## 🔐 JWT Authentication
-
-Authorization header kullanımı:
-
-Authorization: Bearer YOUR_TOKEN  
-
----
-
-## 🧪 Test
-
-- Swagger UI
-- Postman
-
----
-
-## 🚀 Deployment
-
-- application-prod.properties dosyasını repoya ekleme
-- Ortam değişkenleri kullanılması önerilir
-- Nginx + systemd ile servis olarak çalıştırılabilir
-
----
-
-## 🤝 Katkı
-
-Issue ve Pull Request’ler açıktır.
-
----
-
-## 📄 Lisans
-
-Henüz lisans eklenmemiştir.  
-MIT veya Apache 2.0 lisansı eklenebilir.
-
----
-
-## 👤 Geliştirici
-
-Vedat Yalçınkaya  
-GitHub: https://github.com/VedatYalcinkaya
+- Production secret değerlerini repoya commit etmeyin
+- Geliştirme yaparken uygun profili kullanın
+- CORS, iletişim alıcısı ve OpenAPI production URL ayarlarını environment değişkenleriyle özelleştirebilirsiniz

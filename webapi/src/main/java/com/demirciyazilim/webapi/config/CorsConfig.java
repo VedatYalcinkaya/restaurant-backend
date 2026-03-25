@@ -15,7 +15,7 @@
 //     @Override
 //     public void addCorsMappings(CorsRegistry registry) {
 //         registry.addMapping("/**")
-//                 .allowedOrigins("https://emreokur.av.tr", "https://www.emreokur.av.tr")
+//                 .allowedOrigins("http://localhost:3000", "http://localhost:5173")
 //                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 //                 .allowedHeaders("*")
 //                 .allowCredentials(true)
@@ -27,8 +27,8 @@
 //         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //         CorsConfiguration config = new CorsConfiguration();
         
-//         // Sadece emreokur.av.tr domainini kabul et
-//         config.setAllowedOrigins(Arrays.asList("https://emreokur.av.tr", "https://www.emreokur.av.tr"));
+//         // Aktif davranis SecurityConfig uzerinden yonetilir.
+//         config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173"));
         
 //         // Tüm HTTP metodlarını kabul et
 //         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
