@@ -1,41 +1,156 @@
-# Demirci Yazılım Backend
+# Restaurant Backend API 🍽️
 
-Bu proje, Demirci Yazılım şirketi için geliştirilen web sitesinin backend uygulamasıdır.
+Spring Boot tabanlı Restaurant Backend projesi.  
+Rezervasyon, menü ve kariyer süreçlerini yöneten RESTful bir backend mimarisi sunar.
 
-## Proje Yapısı
+Proje, katmanlı mimari ve Maven multi-module yapısı kullanılarak geliştirilmiştir.
 
-Proje, Maven multi-module yapısı ile geliştirilmiştir:
-- `core`: Temel bileşenler, utility sınıfları
-- `entities`: Veritabanı varlıkları
-- `repositories`: Veritabanı işlemleri
-- `business`: İş mantığı
-- `webapi`: REST API ve web arayüzü
+---
 
-## Yapılandırma
+## ✨ Özellikler
 
-Projede üç ana yapılandırma dosyası bulunmaktadır:
+- Rezervasyon Yönetimi
+- Menü ve Kategori Yönetimi
+- Kariyer / İş Başvuruları
+- JWT Authentication
+- Spring Security
+- PostgreSQL + JPA (Hibernate)
+- Cloudinary Dosya & Görsel Yükleme
+- Swagger (OpenAPI)
+- Katmanlı Mimari (Controller / Service / Repository)
 
-1. `application.properties`: Genel yapılandırma ayarları (GitHub'da paylaşılır)
-2. `application-dev.properties`: Geliştirme ortamı için örnek konfigürasyon (GitHub'da paylaşılır)
-3. `application-prod.properties`: Üretim ortamı için gerçek gizli bilgiler (GitHub'a yüklenmez)
+---
 
-## Geliştirme Ortamı Kurulumu
+## 🧱 Proje Yapısı (Multi-Module)
 
-1. Projeyi klonlayın
-2. `application.properties` dosyasındaki `spring.profiles.active` değerini `dev` olarak değiştirin
-3. Maven ile projeyi derleyin: `mvn clean install`
-4. Uygulamayı çalıştırın: `java -jar webapi/target/demirci-api.jar`
+restaurant-backend  
+├── core  
+│   └── ortak yardımcı sınıflar, altyapı yapıları  
+├── entities  
+│   └── JPA Entity sınıfları  
+├── repositories  
+│   └── Spring Data JPA repository’leri  
+├── business  
+│   └── Service katmanı, iş kuralları  
+└── webapi  
+    └── Controller’lar, config, security, main application  
 
-## Production Ortamı Kurulumu
+---
 
-1. Projeyi derleyin: `mvn clean package -DskipTests`
-2. `webapi/target/demirci-api.jar` dosyasını sunucuya yükleyin
-3. `application-prod.properties` dosyasını aynı dizine yükleyin
-4. `application.properties` dosyasında `spring.profiles.active=prod` olduğundan emin olun
-5. Uygulamayı çalıştırın: `java -jar demirci-api.jar`
+## 🛠️ Kullanılan Teknolojiler
 
-## Dikkat Edilmesi Gerekenler
+- Java 17+
+- Spring Boot
+- Spring Security + JWT
+- Spring Data JPA (Hibernate)
+- PostgreSQL
+- Maven
+- Cloudinary
+- Swagger / OpenAPI
 
-- `application-prod.properties` dosyasını asla GitHub'a yüklemeyin!
-- Geliştirme yaparken profili `dev` olarak ayarlayın
-- Üretim ortamında profili `prod` olarak ayarlayın 
+---
+
+## ✅ Gereksinimler
+
+- Java 17 veya üzeri
+- Maven
+- PostgreSQL
+- (Opsiyonel) pgAdmin
+
+---
+
+## ⚙️ Kurulum ve Çalıştırma
+
+### Projeyi Klonla
+
+git clone https://github.com/VedatYalcinkaya/restaurant-backend.git  
+cd restaurant-backend  
+
+---
+
+### PostgreSQL Veritabanı
+
+- Database: restaurant_db  
+- Username: postgres  
+- Password: your_password  
+
+---
+
+### Application Properties
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/restaurant_db  
+spring.datasource.username=postgres  
+spring.datasource.password=your_password  
+
+spring.jpa.hibernate.ddl-auto=update  
+spring.jpa.show-sql=true  
+
+app.jwt.secret=CHANGE_THIS_SECRET  
+app.jwt.expiration=86400000  
+
+cloudinary.cloud-name=YOUR_CLOUD_NAME  
+cloudinary.api-key=YOUR_API_KEY  
+cloudinary.api-secret=YOUR_API_SECRET  
+
+---
+
+### Build
+
+mvn clean install  
+
+---
+
+### Çalıştırma
+
+java -jar webapi/target/*.jar  
+
+veya IDE üzerinden webapi modülündeki Spring Boot main class çalıştırılabilir.
+
+---
+
+## 📚 Swagger / OpenAPI
+
+http://localhost:8080/swagger-ui/index.html  
+
+---
+
+## 🔐 JWT Authentication
+
+Authorization header kullanımı:
+
+Authorization: Bearer YOUR_TOKEN  
+
+---
+
+## 🧪 Test
+
+- Swagger UI
+- Postman
+
+---
+
+## 🚀 Deployment
+
+- application-prod.properties dosyasını repoya ekleme
+- Ortam değişkenleri kullanılması önerilir
+- Nginx + systemd ile servis olarak çalıştırılabilir
+
+---
+
+## 🤝 Katkı
+
+Issue ve Pull Request’ler açıktır.
+
+---
+
+## 📄 Lisans
+
+Henüz lisans eklenmemiştir.  
+MIT veya Apache 2.0 lisansı eklenebilir.
+
+---
+
+## 👤 Geliştirici
+
+Vedat Yalçınkaya  
+GitHub: https://github.com/VedatYalcinkaya
